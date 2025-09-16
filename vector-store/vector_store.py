@@ -22,13 +22,14 @@ class VectorStore:
             raise
 
     def create_table_if_not_exists(self):
-        schema = {
-            "vector": "vector[384]",
-            "text": "string",
-            "doc_id": "string",
-            "page_num": "int",
-            "line_num": "int"
-        }
+        import pyarrow as pa
+        schema = pa.schema([
+            pa.field("vector", pa.list_(pa.float32(), 384)),
+            pa.field("text", pa.string()),
+            pa.field("doc_id", pa.string()),
+            pa.field("page_num", pa.int32()),
+            pa.field("line_num", pa.int32()),
+        ])
         
         if "documents" not in self.db.table_names():
             self.db.create_table("documents", schema=schema)
