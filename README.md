@@ -5,7 +5,32 @@ A simple document search solution using LanceDB for vector storage and similarit
 1. API Backend (Port 8000): Handles document uploads and search requests
 2. Vector Store (Port 8001): Manages document storage and vector search using LanceDB
 
+## Quick Start with Docker
+
+The easiest way to run the services is using Docker Compose:
+
+```bash
+# Build and start the services
+docker-compose up --build
+
+# The services will be available at:
+# - API Backend: http://localhost:8000
+# - Vector Store: http://localhost:8001
+```
+
+Both services will start, and the API backend will wait for the vector store to be healthy before starting.
+
 ## Setup
+
+### Using Docker (Recommended)
+
+1. Make sure you have Docker and Docker Compose installed
+2. Build and start the services:
+```bash
+docker-compose up --build
+```
+
+### Manual Setup (Alternative)
 
 1. Create and activate a Python virtual environment:
 ```bash
@@ -22,6 +47,19 @@ pip install -r requirements.txt
 ```
 
 ## Running the Services
+
+### Using Docker (Recommended)
+
+1. Start both services:
+```bash
+docker-compose up
+```
+
+The services will be available at:
+- API Backend: http://localhost:8000
+- Vector Store: http://localhost:8001
+
+### Manual Setup (Alternative)
 
 1. Start the Vector Store service:
 ```bash

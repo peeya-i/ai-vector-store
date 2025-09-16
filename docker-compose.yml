@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  vector-store:
+    build:
+      context: ./vector-store
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./data/lancedb:/app/data/lancedb
+      - ./api-backend/uploads:/app/uploads
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8001/docs || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+    init: true
+
+  api-backend:
+    build:
+      context: ./api-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api-backend/uploads:/app/uploads
+    environment:
+      - PYTHONUNBUFFERED=1
+      - VECTOR_STORE_URL=http://vector-store:8001
+    depends_on:
+      vector-store:
+        condition: service_healthy
+    restart: unless-stopped
+    init: true

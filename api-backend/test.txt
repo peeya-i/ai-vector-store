@@ -1,0 +1,11 @@
+This is a test document for our AI Vector Store.
+
+This document contains some sample text that we can search for later.
+
+Key features of our system:
+1. Fast document processing
+2. Semantic search capabilities
+3. Efficient vector storage
+
+The system uses LanceDB for vector storage and FastAPI for the REST API.
+You can search for specific terms or concepts in this document.
