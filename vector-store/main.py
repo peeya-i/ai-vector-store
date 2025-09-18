@@ -42,7 +42,12 @@ async def process_document(file_path: str, doc_id: str):
             error_msg = f"File not found at path: {file_path}"
             logger.error(error_msg)
             raise HTTPException(status_code=400, detail=error_msg)
-            
+        
+        if vector_store is None:
+            error_msg = "Vector store is not initialized."
+            logger.error(error_msg)
+            raise HTTPException(status_code=500, detail=error_msg)
+
         success = vector_store.process_pdf(file_path, doc_id)
         if not success:
             raise HTTPException(status_code=400, detail="Failed to process document")
@@ -56,6 +61,9 @@ async def process_document(file_path: str, doc_id: str):
 
 @app.get("/search")
 async def search(query: str, limit: int = 5) -> List[Dict]:
+    if vector_store is None:
+        logger.error("Vector store is not initialized.")
+        raise HTTPException(status_code=500, detail="Vector store is not initialized.")
     results = vector_store.search(query, limit)
     return results
 
